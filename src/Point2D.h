@@ -1,16 +1,35 @@
 #ifndef POINT2D_H
 #define POINT2D_H
 
+#include <utility>
+
 #include "Constants.h"
 
-struct Point2D
+class Vector2D;
+class Point2D
 {
-	short x, y;
-	Point2D(short x, short y)
+public:
+	float x, y; // dangerous
+
+	Point2D()
+		: x(0.f), y(0.f)
     {
-		this->x = x * cnst::aspect * cnst::pixelAspect;
-		this->y = y;
     }
+	explicit Point2D(float& x_, float& y_)
+		: x(std::move(x_) * cnst::aspect * cnst::pixelAspect),
+		  y(std::move(y_))
+    {
+    }
+	explicit Point2D(float&& x_, float&& y_)
+		: x(x_ * cnst::aspect * cnst::pixelAspect),
+		  y(y_)
+    {
+    }
+	~Point2D()
+	{
+	}
+
+	Point2D& moveByVector(const Vector2D &v);
 };
 
-#endif
+#endif // !POINT2D_H
