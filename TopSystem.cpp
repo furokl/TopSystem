@@ -1,30 +1,28 @@
-﻿#include "Constants.h"
-#include "Graphics.h"
+﻿#include "Graphics.h"
 #include "Controller.h"
 
 int main()
 {
-	//Graphics eng;
-
-	/*Point2D a (0, 0);
-	Point2D b (0, 30);
-	Point2D c (120, 30);
-	Point2D x0(5, 3);
-	Triangle tria (a, b, c);
-	tria.draw();*/
+	// Init Circle and Triangle
 	Circle circle(5.f);
 	circle.set_pos(Point2D(10, 0));
-	circle.show();
-	Triangle tria(Point2D(0, 0), Point2D(30, 0), Point2D(30, 15));
+	Triangle tria(Point2D(0, 0), Point2D(10, 0), Point2D(5, 10));
 	tria.set_pos(Point2D(30, 0));
 
-	Controller player (&circle);
-	while (true)
+	// Move controller from Triangle to Circle
+	Controller playera(&tria);
 	{
+		Controller playerb(&circle);
+		playera = std::move(playerb);
+	}
+
+	// Render
+	while (GetAsyncKeyState(VK_ESCAPE) == 0) // exit on press key "ESC"
+	{
+		system("cls");
 		circle.show();
 		tria.show();
+		Sleep(200);
 	}
-	getchar();
-	system("pause");
 	return 0;
 }

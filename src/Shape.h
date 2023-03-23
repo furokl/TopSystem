@@ -3,9 +3,13 @@
 
 #include <array>
 #include <algorithm>
+#include <Windows.h>
 
-#include "Console.h"
 #include "Point2D.h"
+
+extern DWORD cWritten;
+extern HANDLE hConsole;
+extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 
 class Shape
 {
@@ -23,17 +27,12 @@ public:
 	}
 
 	Point2D get_pos() const { return m_position; };
-	void set_pos(Point2D &position) { m_position = position; };
-	void set_pos(Point2D &&position) { set_pos(position); };
+	void set_pos(Point2D position) { m_position = position; };
 
 	virtual void show() = 0;
+	//virtual void rotate() = 0;
 	virtual ~Shape() {}
-
-	/*Shape(Point2D p)
-		: m_center(p)
-	{
-	}*/
 };
 
-#endif
+#endif // !SHAPE_H
 

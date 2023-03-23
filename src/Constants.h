@@ -3,12 +3,14 @@
 
 namespace cnst
 {
-    const short width = 120;
-    const short height = 30;
+    const short width = 120, 
+                height = 30;
 
     const float aspect = (float)width / height, // console window
                 pixelAspect = 9.f / 19.f,       // @
-                speed = 0.25f;
+                speed = 0.2f,
+                slow = 2.f,
+                stop_range = 1.f;
 
     namespace key
     {
@@ -19,4 +21,4 @@ namespace cnst
     }
 }
 
-#endif CONSTANTS_H
+#endif // !CONSTANTS_H

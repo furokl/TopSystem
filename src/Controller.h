@@ -1,10 +1,11 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include <thread>
+
 #include "Shape.h"
 #include "Vector2D.h"
-#include <thread>
-#include <mutex>
+
 // -----------------------------------------
 //              *Controller*
 // 
@@ -32,10 +33,13 @@ public:
     };
 
 private:
-    Shape* actor;
+    Shape* m_actor;
     Vector2D m_v;
-    std::array<std::thread, MAX_MOVEKEY> th;
+    bool m_th_work = true;
 
+    std::thread m_th_stop;
+    std::thread m_th_setPos;
+    std::array<std::thread, MAX_MOVEKEY> m_th_key;
     std::array<vecth, MAX_MOVEKEY> vecth_arr = { {
             { cnst::key::W, Vector2D(0.f, -cnst::speed) },
             { cnst::key::A, Vector2D(-cnst::speed, 0.f) },
@@ -43,33 +47,30 @@ private:
             { cnst::key::D, Vector2D(cnst::speed, 0.f) }
     } };
 
-
 public:
-    Controller(Shape *shape)
+    Controller(Shape* shape)
         : m_v(Vector2D()),
-          actor(shape)
+          m_actor(shape)
     {
         initMoveThreads();
+        initReverseMoveThread();
+        initSetPositionThread();
+    }
+    ~Controller()
+    {
+        m_th_work = false;
     }
 
-private:
-    void initMoveThreads() {
-        for (int i{}; i < MAX_MOVEKEY; ++i)
-        {
-            th[i] = std::thread([i, this]() {
-                while (true)
-                {
-                    if (GetAsyncKeyState(vecth_arr[i].key) != 0)
-                    {
-                        m_v += vecth_arr[i].v;
-                        actor->set_pos(actor->get_pos().moveByVector(m_v));
-                        Sleep(10);
-                    }
-                }
-            });
-            th[i].detach();
-        }
-    }
+    Controller(const Controller &controller) = delete;
+    Controller &operator=(const Controller &controller) = delete;
+    Controller(Controller &&controller) noexcept;
+    Controller &operator=(Controller &&controller) noexcept;
+
+    void operator=(Shape *shape);
+
+    void initMoveThreads();
+    void initReverseMoveThread();
+    void initSetPositionThread();
 };
 
-#endif CONTROLLER_H
+#endif // !CONTROLLER_H

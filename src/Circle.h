@@ -1,7 +1,6 @@
-#ifndef RECTANGLE_H
-#define RECTANGLE_H
+#ifndef CIRCLE_H
+#define CIRCLE_H
 
-#include <cmath>
 #include "Shape.h"
 
 class Circle: public Shape
@@ -23,5 +22,5 @@ public:
 	virtual void show() override;
 };
 
-#endif RECTANGLE_H
+#endif // !CIRCLE_H
 

@@ -20,8 +20,8 @@ public:
 	}
 
 	bool isBelong(Point2D p0);
-	virtual void show() override;
+	virtual void show();
 };
 
-#endif TRIANGLE_H
+#endif // !TRIANGLE_H
 
